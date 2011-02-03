@@ -351,11 +351,7 @@ Be aware, however, that <tt>NULL != 'Spot'</tt> returns <tt>false</tt> due to SQ
         # for the targets
         {}.tap do |aliases|
           from.map(&:to_s).sort.map(&:to_sym).each_with_index do |plural, t_index|
-            begin
-              table = plural._as_class.table_name
-            rescue NameError => e
-              raise PolymorphicError, "Could not find a valid class for #{plural.inspect} (tried #{plural.to_s._classify}). If it's namespaced, be sure to specify it as :\"module/#{plural}\" instead."
-            end
+            table = plural._as_class.table_name
             begin
               plural._as_class.columns.map(&:name).each_with_index do |field, f_index|
                 aliases["#{table}.#{field}"] = "t#{t_index}_r#{f_index}"
